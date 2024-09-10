@@ -60,3 +60,8 @@ const processTicket = () => {
   // Checking to ensure correct role
   // Success (approval/denail and removal from process list)
 };
+
+// Available to all roles
+const viewPreviousTickets = (user) => {
+  // Retrieve all successfully submitted/pendiing/settled tickets
+};
