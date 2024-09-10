@@ -51,5 +51,12 @@ const submitTicket = ({ amount, description, status = "pending" }) => {
   // Checking for amount (must have amount, amount must be numerical)
   // Checking for description (must have description)
   // Automatically give default status of pending
-  // Success if all checks pass
+  // Success if all checks pass (ticket added to process list)
+};
+
+// Available to manager only
+const processTicket = () => {
+  // Checking to see if ticket has already been processed
+  // Checking to ensure correct role
+  // Success (approval/denail and removal from process list)
 };
