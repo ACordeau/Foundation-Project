@@ -24,6 +24,7 @@ Version: 1.0
 
 */
 
+// Available to all roles
 const login = ({ username, password }) => {
   // This is where we do some verification with
   // the database to check for a few things
@@ -33,6 +34,7 @@ const login = ({ username, password }) => {
   // Checking for role
 };
 
+// Available to all roles
 const register = ({ username, password }) => {
   // This is where we do some verification with
   // the database to check for a few things
@@ -40,4 +42,14 @@ const register = ({ username, password }) => {
   // Checking for failed registration (user already exists)
   // Checking for failed registration (missing username or password)
   // Gives employee default role
+};
+
+// Available to all roles
+const submitTicket = ({ amount, description, status = "pending" }) => {
+  // This is where we will do some preliminary
+  // checking to ensure the ticket was properly submitted
+  // Checking for amount (must have amount, amount must be numerical)
+  // Checking for description (must have description)
+  // Automatically give default status of pending
+  // Success if all checks pass
 };
