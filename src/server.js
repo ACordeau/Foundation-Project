@@ -4,6 +4,17 @@ Author: Aaron Cordeau
 Version: 1.0
 */
 
+// Server and Setup
+const express = require("express");
+const bodyParser = require("body-parser");
+
+const app = express();
+app.use(bodyParser.json());
+
+app.listen(3000, () => {
+  console.log("Server is running on port 3000");
+});
+
 // Entity Plan
 
 // EMPLOYEE
