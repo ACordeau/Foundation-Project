@@ -3,7 +3,7 @@ const TicketDao = require("../dao/ticketDAO");
 class TicketController {
   static submit(req, res) {
     const { amount, description } = req.body;
-    if (!amount) {
+    if (!amount || isNaN(amount)) {
       return res.status(400).json({
         success: false,
         message: "Ticket submission requires a dollar amount",
