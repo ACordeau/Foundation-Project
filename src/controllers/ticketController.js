@@ -18,6 +18,11 @@ class TicketController {
     const result = TicketDao.submitTicket(amount, description);
     return res.status(result.success ? 201 : 400).json(result);
   }
+
+  static view(req, res) {
+    const result = TicketDao.getAllTickets();
+    return res.status(200).json(result);
+  }
 }
 
 module.exports = TicketController;
