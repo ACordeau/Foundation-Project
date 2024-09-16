@@ -1,0 +1,12 @@
+[
+  {
+    "amount": 300,
+    "description": "Plane ticket to Hawaii",
+    "status": "pending"
+  },
+  {
+    "amount": 300,
+    "description": "Plane ticket to Hawaii",
+    "status": "pending"
+  }
+]
