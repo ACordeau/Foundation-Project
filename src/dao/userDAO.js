@@ -32,6 +32,17 @@ class UserDao {
     this.saveAllUsers(users);
     return { success: true, message: "Registration successful" };
   }
+
+  static loginUser(username, password, role) {
+    const currentUser = this.findUserByUsername(username);
+    if (!currentUser) {
+      return { success: false, message: "User not found" };
+    }
+    if (currentUser.password !== password) {
+      return { success: false, message: "Invalid password" };
+    }
+    return { success: true, message: "Login successful", currentUser };
+  }
 }
 
 module.exports = UserDao;
