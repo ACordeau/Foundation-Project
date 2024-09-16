@@ -45,30 +45,30 @@ app.listen(3000, () => {
 const login = ({ username, password }) => {
   // This is where we do some verification with
   // the database to check for a few things
-  // Checking for successful login
-  // Checking for failed login (invalid credentials)
-  // Checking for failed login (invalid user)
-  // Checking for role
+  // DONE Checking for successful login
+  // DONE Checking for failed login (invalid credentials)
+  // DONE Checking for failed login (invalid user)
+  // DONE Checking for role
 };
 
 // Available to all roles
 const register = ({ username, password }) => {
   // This is where we do some verification with
   // the database to check for a few things
-  // Checking for successful registration
-  // Checking for failed registration (user already exists)
-  // Checking for failed registration (missing username or password)
-  // Gives employee default role
+  // DONE Checking for successful registration
+  // DONE Checking for failed registration (user already exists)
+  // DONE Checking for failed registration (missing username or password)
+  // DONE Gives employee default role
 };
 
 // Available to all roles
 const submitTicket = ({ amount, description, status = "pending" }) => {
   // This is where we will do some preliminary
   // checking to ensure the ticket was properly submitted
-  // Checking for amount (must have amount, amount must be numerical)
-  // Checking for description (must have description)
-  // Automatically give default status of pending
-  // Success if all checks pass (ticket added to process list)
+  // DONE Checking for amount (must have amount, amount must be numerical)
+  // DONE Checking for description (must have description)
+  // DONE Automatically give default status of pending
+  // DONE Success if all checks pass (ticket added to process list)
 };
 
 // Available to manager only
