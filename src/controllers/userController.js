@@ -1,43 +1,31 @@
-const UserDao = require("../dao/userDAO");
+// const UserDao = require("../dao/userDAO");
+const UserService = require("../service/userService");
+const express = require("express");
+const router = express.Router();
 
-class UserController {
-  static async register(req, res) {
-    const { username, password } = req.body;
-    if (!username || !password) {
-      return res.status(400).json({
-        success: false,
-        message: "Username and password are required",
-      });
-    }
+router.post("/register", async (req, res) => {
+  const { username, password, role } = req.body;
+  const newUser = await UserService.registerUser(username, password, role);
 
-    try {
-      const result = await UserDao.registerUser(username, password);
-      return res.status(result.success ? 201 : 400).json(result);
-    } catch (err) {
-      return res
-        .status(500)
-        .json({ success: false, message: "Error registering user" });
-    }
+  if (newUser.success) {
+    res.status(201).json(newUser);
+  } else {
+    res.status(400).json({ message: "User not created" });
   }
+});
 
-  static async login(req, res) {
-    const { username, password } = req.body;
-    if (!username || !password) {
-      return res.status(400).json({
-        success: false,
-        message: "Username and password are required",
-      });
-    }
+router.post("/login", async (req, res) => {
+  const { username, password } = req.body;
 
-    try {
-      const result = await UserDao.loginUser(username, password);
-      return res.status(result.success ? 200 : 401).json(result);
-    } catch (err) {
-      return res
-        .status(500)
-        .json({ success: false, message: "Error during login" });
-    }
+  const token = await UserService.loginUser(username, password);
+
+  console.log(token);
+
+  if (token.success) {
+    res.status(200).json({ token });
+  } else {
+    res.status(400).json({ message: "Login unsuccessful" });
   }
-}
+});
 
-module.exports = UserController;
+module.exports = router;

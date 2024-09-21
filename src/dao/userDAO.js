@@ -1,7 +1,4 @@
-const fs = require("fs");
-const path = require("path");
 const User = require("../models/userModel");
-// const dynamodb = require("../data/dynamoClient");
 const uuid = require("uuid");
 
 const {
@@ -30,7 +27,7 @@ class UserDao {
     };
 
     try {
-      const data = await dynamodb.scan(command);
+      const data = await documentClient.send(command);
       return data.Items || [];
     } catch (err) {
       console.error(err);
@@ -43,48 +40,17 @@ class UserDao {
       Key: { username },
     });
 
-    try {
-      const data = await documentClient.send(command);
-      return data.Item || null;
-    } catch (err) {
-      console.error(err);
-    }
+    const data = await documentClient.send(command);
+    return data.Item || null;
   }
 
-  static async registerUser(username, password, role = "employee") {
-    const searchUser = await this.findUserByUsername(username);
-
-    if (searchUser) {
-      return { success: false, message: "Username is already taken" };
-    }
-
-    const newUser = new User(username, password, role);
-
+  static async registerUser(user) {
     const command = new PutCommand({
       TableName,
-      Item: newUser,
+      Item: user,
     });
 
-    try {
-      await documentClient.send(command);
-      return { success: true, message: "Registration successful" };
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
-  static async loginUser(username, password) {
-    const currentUser = await this.findUserByUsername(username);
-
-    if (!currentUser) {
-      return { success: false, message: "User not found" };
-    }
-
-    if (currentUser.password !== password) {
-      return { success: false, message: "Invalid password" };
-    }
-
-    return { success: true, message: "Login successful", currentUser };
+    await documentClient.send(command);
   }
 }
 
