@@ -10,7 +10,7 @@ router.post("/register", async (req, res) => {
   if (newUser.success) {
     res.status(201).json(newUser);
   } else {
-    res.status(400).json({ message: "User not created" });
+    res.status(400).json({ message: newUser.message });
   }
 });
 
@@ -24,7 +24,7 @@ router.post("/login", async (req, res) => {
   if (token.success) {
     res.status(200).json({ token });
   } else {
-    res.status(400).json({ message: "Login unsuccessful" });
+    res.status(400).json({ message: token.message });
   }
 });
 

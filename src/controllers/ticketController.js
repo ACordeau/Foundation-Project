@@ -1,28 +1,20 @@
-const TicketDao = require("../dao/ticketDAO");
+const express = require("express");
+const router = express.Router();
+const ticketService = require("../service/ticketService");
 
-class TicketController {
-  static submit(req, res) {
-    const { amount, description } = req.body;
-    if (!amount || isNaN(amount)) {
-      return res.status(400).json({
-        success: false,
-        message: "Ticket submission requires a dollar amount",
-      });
-    }
-    if (!description) {
-      return res.status(400).json({
-        success: false,
-        message: "Ticket submission requires a description",
-      });
-    }
-    const result = TicketDao.submitTicket(amount, description);
-    return res.status(result.success ? 201 : 400).json(result);
+router.post("/submit", async (req, res) => {
+  const { username, amount, description } = req.body;
+  const newTicket = await ticketService.submitTicket(
+    username,
+    amount,
+    description
+  );
+
+  if (newTicket.success) {
+    res.status(201).json(newTicket);
+  } else {
+    res.status(400).json({ message: newTicket.message });
   }
+});
 
-  static view(req, res) {
-    const result = TicketDao.getAllTickets();
-    return res.status(200).json(result);
-  }
-}
-
-module.exports = TicketController;
+module.exports = router;
