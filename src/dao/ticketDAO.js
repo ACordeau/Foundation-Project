@@ -44,6 +44,35 @@ async function findTicketsByUsername(username) {
     ticketId: item.ticketId.S,
     amount: item.amount.N,
     description: item.description.S,
+    status: item.status.S,
+    submittedAt: item.submittedAt.S,
+    username: item.username.S,
+  }));
+
+  return { tickets } || null;
+}
+
+async function getTicketsByStatus(status) {
+  const command = new QueryCommand({
+    TableName,
+    IndexName: "status-index",
+    KeyConditionExpression: "#status = :status",
+    ExpressionAttributeNames: {
+      "#status": "status",
+    },
+    ExpressionAttributeValues: {
+      ":status": { S: status },
+    },
+    ScanIndexForward: true,
+  });
+
+  const data = await documentClient.send(command);
+
+  const tickets = (data.Items || []).map((item) => ({
+    ticketId: item.ticketId.S,
+    amount: item.amount.N,
+    description: item.description.S,
+    status: item.status.S,
     submittedAt: item.submittedAt.S,
     username: item.username.S,
   }));
@@ -54,4 +83,5 @@ async function findTicketsByUsername(username) {
 module.exports = {
   createTicket,
   findTicketsByUsername,
+  getTicketsByStatus,
 };

@@ -69,7 +69,24 @@ async function viewPreviousTickets(username) {
   };
 }
 
+async function getPendingTickets() {
+  const tickets = await TicketDao.getTicketsByStatus("pending");
+  if (tickets.length < 1) {
+    return {
+      success: false,
+      message: "No pending tickets",
+    };
+  }
+
+  return {
+    success: true,
+    messaged: "Pending tickets successfully retrieved",
+    tickets,
+  };
+}
+
 module.exports = {
   submitTicket,
   viewPreviousTickets,
+  getPendingTickets,
 };

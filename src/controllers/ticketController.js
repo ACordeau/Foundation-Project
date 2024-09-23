@@ -28,4 +28,14 @@ router.get("/:username/tickets", async (req, res) => {
   }
 });
 
+router.get("/pending", async (req, res) => {
+  const tickets = await ticketService.getPendingTickets();
+
+  if (tickets.success) {
+    res.status(200).json(tickets);
+  } else {
+    res.status(400).json({ message: tickets.message });
+  }
+});
+
 module.exports = router;
