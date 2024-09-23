@@ -38,4 +38,21 @@ router.get("/pending", async (req, res) => {
   }
 });
 
+router.post("/:ticketId/process", async (req, res) => {
+  const ticketId = req.params;
+  const { status } = req.body;
+
+  console.log(status);
+
+  const updatedTicket = await ticketService.processTicket(ticketId, status);
+
+  console.log(updatedTicket);
+
+  if (updatedTicket.success) {
+    res.status(200).json(updatedTicket);
+  } else {
+    res.status(400).json({ message: updatedTicket.message });
+  }
+});
+
 module.exports = router;

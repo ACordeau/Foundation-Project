@@ -85,8 +85,45 @@ async function getPendingTickets() {
   };
 }
 
+async function processTicket(ticketId, status) {
+  if (status !== "approved" && status !== "denied") {
+    return {
+      success: false,
+      message: "Status must be approved or denied",
+    };
+  }
+
+  const ticket = await TicketDao.findTicketById(ticketId);
+  console.log(ticket);
+
+  if (!ticket) {
+    return {
+      success: false,
+      message: "Ticket not found",
+    };
+  }
+
+  if (ticket.status !== "pending") {
+    return {
+      success: false,
+      message: "Ticket already processed",
+    };
+  }
+
+  ticket.status = status;
+
+  await TicketDao.updateTicketStatus(ticket);
+
+  return {
+    success: true,
+    messaged: "Tickets successfully processed",
+    ticket,
+  };
+}
+
 module.exports = {
   submitTicket,
   viewPreviousTickets,
   getPendingTickets,
+  processTicket,
 };

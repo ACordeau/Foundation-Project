@@ -80,8 +80,29 @@ async function getTicketsByStatus(status) {
   return { tickets } || null;
 }
 
+async function findTicketById(ticketId) {
+  const command = new GetCommand({
+    TableName,
+    Key: ticketId,
+  });
+
+  const data = await documentClient.send(command);
+  return data.Item || null;
+}
+
+async function updateTicketStatus(ticket) {
+  const command = new PutCommand({
+    TableName,
+    Item: ticket,
+  });
+
+  await documentClient.send(command);
+}
+
 module.exports = {
   createTicket,
   findTicketsByUsername,
   getTicketsByStatus,
+  findTicketById,
+  updateTicketStatus,
 };
