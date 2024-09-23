@@ -25,6 +25,33 @@ async function createTicket(ticket) {
   await documentClient.send(command);
 }
 
+async function findTicketsByUsername(username) {
+  const command = new QueryCommand({
+    TableName,
+    IndexName: "username-index",
+    KeyConditionExpression: "#username = :username",
+    ExpressionAttributeNames: {
+      "#username": "username",
+    },
+    ExpressionAttributeValues: {
+      ":username": { S: username },
+    },
+  });
+
+  const data = await documentClient.send(command);
+
+  const tickets = (data.Items || []).map((item) => ({
+    ticketId: item.ticketId.S,
+    amount: item.amount.N,
+    description: item.description.S,
+    submittedAt: item.submittedAt.S,
+    username: item.username.S,
+  }));
+
+  return { tickets } || null;
+}
+
 module.exports = {
   createTicket,
+  findTicketsByUsername,
 };

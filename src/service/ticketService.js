@@ -43,6 +43,33 @@ async function submitTicket(username, amount, description) {
   };
 }
 
+async function viewPreviousTickets(username) {
+  const user = await UserDao.findUserByUsername(username);
+
+  if (!user) {
+    return {
+      success: false,
+      message: "User does not exist",
+    };
+  }
+
+  const tickets = await TicketDao.findTicketsByUsername(username);
+
+  if (tickets.length < 1) {
+    return {
+      success: false,
+      message: "No tickets found for this user",
+    };
+  }
+
+  return {
+    success: true,
+    messaged: "Tickets successfully retrieved",
+    tickets,
+  };
+}
+
 module.exports = {
   submitTicket,
+  viewPreviousTickets,
 };
