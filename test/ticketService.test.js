@@ -3,6 +3,7 @@ const UserDao = require("../src/dao/userDAO");
 const TicketDao = require("../src/dao/ticketDAO");
 const uuid = require("uuid");
 const jwt = require("jsonwebtoken");
+// const { logger } = require("../src/utils/logger");
 
 // Mock the dependencies
 jest.mock("../src/dao/userDAO");
@@ -154,84 +155,3 @@ describe("TicketService", () => {
     });
   });
 });
-
-// describe("Ticket Service", () => {
-//   describe("submitTicket", () => {
-//     it("should successfully submit a ticket with valid data", async () => {
-//       // Arrange
-//       const mockUsername = "validUser";
-//       const mockAmount = 100;
-//       const mockDescription = "Reimbursement for office supplies";
-//       const mockUser = { username: mockUsername };
-
-//       UserDao.findUserByUsername.mockResolvedValue(mockUser);
-//       TicketDao.createTicket.mockResolvedValue();
-
-//       // Act
-//       const result = await ticketService.submitTicket(
-//         mockUsername,
-//         mockAmount,
-//         mockDescription
-//       );
-
-//       // Assert
-//       expect(result.success).toBe(true);
-//       expect(TicketDao.createTicket).toHaveBeenCalledWith({
-//         ticketId: "mock-ticket-id",
-//         username: mockUsername,
-//         amount: mockAmount,
-//         description: mockDescription,
-//         status: "pending",
-//         submittedAt: expect.any(String),
-//       });
-//     });
-
-//     it("should fail if amount is invalid", async () => {
-//       // Act
-//       const result = await ticketService.submitTicket(
-//         "validUser",
-//         -50,
-//         "Invalid amount"
-//       );
-
-//       // Assert
-//       expect(result.success).toBe(false);
-//       expect(result.message).toBe(
-//         "Must provide a valid monetary amount above zero"
-//       );
-//     });
-//   });
-
-//   describe("viewPreviousTickets", () => {
-//     it("should return tickets for a valid user", async () => {
-//       // Arrange
-//       const mockUsername = "validUser";
-//       const mockUser = { username: mockUsername };
-//       const mockTickets = [
-//         { ticketId: "mock-ticket-id", amount: 100, description: "Test" },
-//       ];
-
-//       UserDao.findUserByUsername.mockResolvedValue(mockUser);
-//       TicketDao.findTicketsByUsername.mockResolvedValue(mockTickets);
-
-//       // Act
-//       const result = await ticketService.viewPreviousTickets(mockUsername);
-
-//       // Assert
-//       expect(result.success).toBe(true);
-//       expect(result.tickets).toEqual(mockTickets);
-//     });
-
-//     it("should return error if no user is found", async () => {
-//       // Arrange
-//       UserDao.findUserByUsername.mockResolvedValue(null);
-
-//       // Act
-//       const result = await ticketService.viewPreviousTickets("invalidUser");
-
-//       // Assert
-//       expect(result.success).toBe(false);
-//       expect(result.message).toBe("User does not exist");
-//     });
-//   });
-// });

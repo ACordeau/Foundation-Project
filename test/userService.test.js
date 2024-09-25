@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const userService = require("../src/service/userService");
 const UserDao = require("../src/dao/userDAO");
+// const { logger } = require("../src/utils/logger");
 
 // Mock the dependencies
 jest.mock("../src/dao/userDAO");
