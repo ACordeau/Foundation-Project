@@ -1,5 +1,7 @@
 const UserDao = require("../dao/userDAO");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const secret = process.env.JWT_SECRET;
 
 async function registerUser(username, password, role = "employee") {
   if (!username || !password) {
@@ -43,10 +45,14 @@ async function loginUser(username, password) {
     return { success: false, message: "Invalid username or password" };
   }
 
+  const token = jwt.sign({ username: user.username, role: user.role }, secret, {
+    expiresIn: "1h",
+  });
+
   return {
     success: true,
     message: "Login successful",
-    user: { username, role: user.role },
+    token,
   };
 }
 
