@@ -20,7 +20,7 @@ describe("TicketService", () => {
       const username = "testUser";
       const amount = 100;
       const description = "Travel reimbursement";
-      UserDao.findUserByUsername.mockResolvedValue({ username });
+      UserDao.getUserByUsername.mockResolvedValue({ username });
 
       TicketDao.createTicket.mockResolvedValue();
 
@@ -42,7 +42,7 @@ describe("TicketService", () => {
     });
 
     it("should return an error if the user does not exist", async () => {
-      UserDao.findUserByUsername.mockResolvedValue(null);
+      UserDao.getUserByUsername.mockResolvedValue(null);
 
       const result = await ticketService.submitTicket(
         "invalidUser",
@@ -55,7 +55,7 @@ describe("TicketService", () => {
     });
 
     it("should return an error if amount is invalid", async () => {
-      UserDao.findUserByUsername.mockResolvedValue({ username: "testUser" });
+      UserDao.getUserByUsername.mockResolvedValue({ username: "testUser" });
 
       const result = await ticketService.submitTicket(
         "testUser",
@@ -72,8 +72,8 @@ describe("TicketService", () => {
 
   describe("viewPreviousTickets", () => {
     it("should return tickets successfully for a user", async () => {
-      UserDao.findUserByUsername.mockResolvedValue({ username: "testUser" });
-      TicketDao.findTicketsByUsername.mockResolvedValue([
+      UserDao.getUserByUsername.mockResolvedValue({ username: "testUser" });
+      TicketDao.getTicketsByUsername.mockResolvedValue([
         { ticketId: "1", amount: 100, status: "pending" },
       ]);
 
@@ -84,8 +84,8 @@ describe("TicketService", () => {
     });
 
     it("should return an error if no tickets found", async () => {
-      UserDao.findUserByUsername.mockResolvedValue({ username: "testUser" });
-      TicketDao.findTicketsByUsername.mockResolvedValue([]);
+      UserDao.getUserByUsername.mockResolvedValue({ username: "testUser" });
+      TicketDao.getTicketsByUsername.mockResolvedValue([]);
 
       const result = await ticketService.viewPreviousTickets("testUser");
 
@@ -121,7 +121,7 @@ describe("TicketService", () => {
       const ticketId = "123";
       const ticket = { ticketId, status: "pending" };
 
-      TicketDao.findTicketById.mockResolvedValue(ticket);
+      TicketDao.getTicketById.mockResolvedValue(ticket);
       TicketDao.updateTicketStatus.mockResolvedValue();
 
       const result = await ticketService.processTicket(ticketId, "approved");
@@ -136,7 +136,7 @@ describe("TicketService", () => {
     });
 
     it("should return an error if the ticket has already been processed", async () => {
-      TicketDao.findTicketById.mockResolvedValue({
+      TicketDao.getTicketById.mockResolvedValue({
         ticketId: "123",
         status: "approved",
       });

@@ -13,7 +13,7 @@ async function registerUser(username, password, role = "employee") {
     };
   }
 
-  const existingUser = await UserDao.findUserByUsername(username);
+  const existingUser = await UserDao.getUserByUsername(username);
 
   if (existingUser) {
     logger.info(`Failed register attempt: Username taken`);
@@ -45,7 +45,7 @@ async function loginUser(username, password) {
     };
   }
 
-  const user = await UserDao.findUserByUsername(username);
+  const user = await UserDao.getUserByUsername(username);
   if (!user || !(await bcrypt.compare(password, user.password))) {
     logger.info(`Failed login attempt: Invalid credentials`);
     return { success: false, message: "Invalid username or password" };

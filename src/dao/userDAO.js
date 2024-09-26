@@ -33,7 +33,7 @@ class UserDao {
     }
   }
 
-  static async findUserByUsername(username) {
+  static async getUserByUsername(username) {
     const command = new GetCommand({
       TableName,
       Key: { username },

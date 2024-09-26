@@ -4,7 +4,7 @@ const uuid = require("uuid");
 const { logger } = require("../utils/logger");
 
 async function submitTicket(username, amount, description, type) {
-  const user = await UserDao.findUserByUsername(username);
+  const user = await UserDao.getUserByUsername(username);
 
   if (!user) {
     logger.info(`Failed submission attempt: Invalid user`);
@@ -50,7 +50,7 @@ async function submitTicket(username, amount, description, type) {
 }
 
 async function viewPreviousTicketByType(username, type) {
-  const user = await UserDao.findUserByUsername(username);
+  const user = await UserDao.getUserByUsername(username);
 
   if (!user) {
     logger.info(`Failed view attempt: Invalid user`);
@@ -60,7 +60,7 @@ async function viewPreviousTicketByType(username, type) {
     };
   }
 
-  const tickets = await TicketDao.findTicketsByUsernameAndType(username, type);
+  const tickets = await TicketDao.getTicketsByUsernameAndType(username, type);
   if (tickets.length < 1) {
     logger.info(`Failed view attempt: No previous tickets`);
     return {
@@ -78,7 +78,7 @@ async function viewPreviousTicketByType(username, type) {
 }
 
 async function viewPreviousTickets(username) {
-  const user = await UserDao.findUserByUsername(username);
+  const user = await UserDao.getUserByUsername(username);
 
   if (!user) {
     logger.info(`Failed view attempt: Invalid user`);
@@ -88,7 +88,7 @@ async function viewPreviousTickets(username) {
     };
   }
 
-  const tickets = await TicketDao.findTicketsByUsername(username);
+  const tickets = await TicketDao.getTicketsByUsername(username);
 
   if (tickets.length < 1) {
     logger.info(`Failed view attempt: No previous tickets`);
@@ -133,7 +133,7 @@ async function processTicket(ticketId, status) {
     };
   }
 
-  const ticket = await TicketDao.findTicketById(ticketId);
+  const ticket = await TicketDao.getTicketById(ticketId);
   console.log(ticket);
 
   if (!ticket) {

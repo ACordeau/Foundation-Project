@@ -15,7 +15,7 @@ describe("User Service", () => {
       // Arrange
       const mockUsername = "newUser";
       const mockPassword = "password123";
-      UserDao.findUserByUsername.mockResolvedValue(null); // No existing user
+      UserDao.getUserByUsername.mockResolvedValue(null); // No existing user
       bcrypt.hash.mockResolvedValue("hashedPassword");
       UserDao.registerUser.mockResolvedValue();
 
@@ -34,7 +34,7 @@ describe("User Service", () => {
     it("should fail to register if username is already taken", async () => {
       // Arrange
       const mockUsername = "existingUser";
-      UserDao.findUserByUsername.mockResolvedValue({ username: mockUsername });
+      UserDao.getUserByUsername.mockResolvedValue({ username: mockUsername });
 
       // Act
       const result = await userService.registerUser(
@@ -60,7 +60,7 @@ describe("User Service", () => {
         role: "employee",
       };
 
-      UserDao.findUserByUsername.mockResolvedValue(mockUser);
+      UserDao.getUserByUsername.mockResolvedValue(mockUser);
       bcrypt.compare.mockResolvedValue(true);
       jwt.sign.mockReturnValue("fakeToken");
 
@@ -82,7 +82,7 @@ describe("User Service", () => {
         role: "employee",
       };
 
-      UserDao.findUserByUsername.mockResolvedValue(mockUser);
+      UserDao.getUserByUsername.mockResolvedValue(mockUser);
       bcrypt.compare.mockResolvedValue(false); // Passwords do not match
 
       // Act

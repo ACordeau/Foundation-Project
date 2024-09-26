@@ -25,7 +25,7 @@ async function createTicket(ticket) {
   await documentClient.send(command);
 }
 
-async function findTicketsByUsername(username) {
+async function getTicketsByUsername(username) {
   const command = new QueryCommand({
     TableName,
     IndexName: "username-index",
@@ -53,7 +53,7 @@ async function findTicketsByUsername(username) {
   return { tickets } || null;
 }
 
-async function findTicketsByUsernameAndType(username, type) {
+async function getTicketsByUsernameAndType(username, type) {
   const command = new QueryCommand({
     TableName,
     IndexName: "type-index",
@@ -112,7 +112,7 @@ async function getTicketsByStatus(status) {
   return { tickets } || null;
 }
 
-async function findTicketById(ticketId) {
+async function getTicketById(ticketId) {
   const command = new GetCommand({
     TableName,
     Key: ticketId,
@@ -133,9 +133,9 @@ async function updateTicketStatus(ticket) {
 
 module.exports = {
   createTicket,
-  findTicketsByUsername,
+  getTicketsByUsername,
   getTicketsByStatus,
-  findTicketById,
+  getTicketById,
   updateTicketStatus,
-  findTicketsByUsernameAndType,
+  getTicketsByUsernameAndType,
 };
