@@ -3,7 +3,7 @@ const UserDao = require("../dao/userDAO");
 const uuid = require("uuid");
 const { logger } = require("../utils/logger");
 
-async function submitTicket(username, amount, description) {
+async function submitTicket(username, amount, description, type) {
   const user = await UserDao.findUserByUsername(username);
 
   if (!user) {
@@ -35,6 +35,7 @@ async function submitTicket(username, amount, description) {
     username,
     amount,
     description,
+    type,
     status: "pending",
     submittedAt: new Date().toISOString(),
   };
@@ -45,6 +46,34 @@ async function submitTicket(username, amount, description) {
     success: true,
     message: "Ticket submitted successfully",
     ticket: newTicket,
+  };
+}
+
+async function viewPreviousTicketByType(username, type) {
+  const user = await UserDao.findUserByUsername(username);
+
+  if (!user) {
+    logger.info(`Failed view attempt: Invalid user`);
+    return {
+      success: false,
+      message: "User does not exist",
+    };
+  }
+
+  const tickets = await TicketDao.findTicketsByUsernameAndType(username, type);
+  if (tickets.length < 1) {
+    logger.info(`Failed view attempt: No previous tickets`);
+    return {
+      success: false,
+      message: "No tickets found for this user",
+    };
+  }
+
+  logger.info(`Successful ticket history inquiry by: ${user.username}`);
+  return {
+    success: true,
+    messaged: "Tickets successfully retrieved",
+    tickets,
   };
 }
 
@@ -141,4 +170,5 @@ module.exports = {
   viewPreviousTickets,
   getPendingTickets,
   processTicket,
+  viewPreviousTicketByType,
 };

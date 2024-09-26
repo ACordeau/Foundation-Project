@@ -45,6 +45,37 @@ async function findTicketsByUsername(username) {
     amount: item.amount.N,
     description: item.description.S,
     status: item.status.S,
+    type: item.type.S,
+    submittedAt: item.submittedAt.S,
+    username: item.username.S,
+  }));
+
+  return { tickets } || null;
+}
+
+async function findTicketsByUsernameAndType(username, type) {
+  const command = new QueryCommand({
+    TableName,
+    IndexName: "type-index",
+    KeyConditionExpression: "#username = :username AND #type = :type",
+    ExpressionAttributeNames: {
+      "#username": "username",
+      "#type": "type",
+    },
+    ExpressionAttributeValues: {
+      ":username": { S: username },
+      ":type": { S: type },
+    },
+  });
+
+  const data = await documentClient.send(command);
+
+  const tickets = (data.Items || []).map((item) => ({
+    ticketId: item.ticketId.S,
+    amount: item.amount.N,
+    description: item.description.S,
+    status: item.status.S,
+    type: item.type.S,
     submittedAt: item.submittedAt.S,
     username: item.username.S,
   }));
@@ -73,6 +104,7 @@ async function getTicketsByStatus(status) {
     amount: item.amount.N,
     description: item.description.S,
     status: item.status.S,
+    type: item.type.S,
     submittedAt: item.submittedAt.S,
     username: item.username.S,
   }));
@@ -105,4 +137,5 @@ module.exports = {
   getTicketsByStatus,
   findTicketById,
   updateTicketStatus,
+  findTicketsByUsernameAndType,
 };
