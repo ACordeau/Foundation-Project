@@ -154,4 +154,33 @@ describe("TicketService", () => {
       expect(result.message).toBe("Status must be approved or denied");
     });
   });
+
+  describe("viewPreviousTicketsByType", () => {
+    it("should return tickets successfully for a user and filtered by type", async () => {
+      UserDao.getUserByUsername.mockResolvedValue({ username: "testUser" });
+      TicketDao.getTicketsByUsernameAndType.mockResolvedValue([
+        { ticketId: "1", amount: 100, status: "pending", type: "Travel" },
+      ]);
+      const result = await ticketService.viewPreviousTicketByType(
+        "testUser",
+        "Travel"
+      );
+
+      expect(result.success).toBe(true);
+      expect(result.tickets).toHaveLength(1);
+    });
+  });
+
+  it("should return an error if no tickets found", async () => {
+    UserDao.getUserByUsername.mockResolvedValue({ username: "testUser" });
+    TicketDao.getTicketsByUsernameAndType.mockResolvedValue([]);
+
+    const result = await ticketService.viewPreviousTicketByType(
+      "testUser",
+      "Travel"
+    );
+
+    expect(result.success).toBe(false);
+    expect(result.message).toBe("No tickets found for this user");
+  });
 });
