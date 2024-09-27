@@ -64,7 +64,7 @@ router.get("/pending", verifyToken, isManager, async (req, res) => {
   }
 });
 
-router.post("/process", verifyToken, isManager, async (req, res) => {
+router.put("/process", verifyToken, isManager, async (req, res) => {
   const { status, ticketId } = req.body;
 
   const id = {

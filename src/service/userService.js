@@ -62,7 +62,48 @@ async function loginUser(username, password) {
   };
 }
 
+async function updateUserRole(username, manager, role) {
+  if (role !== "employee" && role !== "manager") {
+    logger.info(`Failed role change attempt: Invalid role`);
+    return {
+      success: false,
+      message: "Role must be employee or manager",
+    };
+  }
+
+  const user = await UserDao.getUserByUsername(username);
+
+  if (!user) {
+    logger.info(
+      `Failed role change attempt: User not found with username: ${username}`
+    );
+    return {
+      success: false,
+      message: "User not found",
+    };
+  }
+
+  if (user.role === role) {
+    logger.info(`Failed processing attempt: User already in current role`);
+    return {
+      success: false,
+      message: "User role not changed",
+    };
+  }
+
+  user.role = role;
+
+  await UserDao.updateUserRole(user);
+  logger.info(`User role successfully changed: ${user}`);
+  return {
+    success: true,
+    messaged: "User role successfully changed",
+    user,
+  };
+}
+
 module.exports = {
   registerUser,
   loginUser,
+  updateUserRole,
 };

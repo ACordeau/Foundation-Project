@@ -3,16 +3,14 @@ const UserDao = require("../src/dao/userDAO");
 const TicketDao = require("../src/dao/ticketDAO");
 const uuid = require("uuid");
 const jwt = require("jsonwebtoken");
-// const { logger } = require("../src/utils/logger");
 
-// Mock the dependencies
 jest.mock("../src/dao/userDAO");
 jest.mock("../src/dao/ticketDAO");
 jest.mock("jsonwebtoken");
 
 describe("TicketService", () => {
   afterEach(() => {
-    jest.clearAllMocks(); // Clear mocks after each test
+    jest.clearAllMocks();
   });
 
   describe("submitTicket", () => {

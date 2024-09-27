@@ -51,6 +51,15 @@ class UserDao {
 
     await documentClient.send(command);
   }
+
+  static async updateUserRole(user) {
+    const command = new PutCommand({
+      TableName,
+      Item: user,
+    });
+
+    await documentClient.send(command);
+  }
 }
 
 module.exports = UserDao;
