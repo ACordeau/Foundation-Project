@@ -20,13 +20,7 @@ router.post("/submit", verifyToken, async (req, res) => {
 });
 
 router.get("/view", verifyToken, async (req, res) => {
-  const { username } = req.body;
-
-  if (req.user.username !== username) {
-    return res.status(403).json({
-      message: "Unauthorized access: Cannot view tickets of other users",
-    });
-  }
+  const username = req.user.username;
 
   const tickets = await ticketService.viewPreviousTickets(username);
 
@@ -38,13 +32,9 @@ router.get("/view", verifyToken, async (req, res) => {
 });
 
 router.get("/view/type", verifyToken, async (req, res) => {
-  const { username, type } = req.body;
+  const username = req.user.username;
+  const type = req.query.type;
 
-  if (req.user.username !== username) {
-    return res.status(403).json({
-      message: "Unauthorized access: Cannot view tickets of other users",
-    });
-  }
   const tickets = await ticketService.viewPreviousTicketByType(username, type);
 
   if (tickets.success) {

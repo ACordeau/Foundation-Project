@@ -30,7 +30,8 @@ router.post("/login", async (req, res) => {
 });
 
 router.put("/roles", verifyToken, isManager, async (req, res) => {
-  const { username, role, manager } = req.body;
+  const { username, role } = req.body;
+  const manager = req.user.username;
 
   const updatedUser = await UserService.updateUserRole(username, manager, role);
 

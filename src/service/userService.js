@@ -62,7 +62,7 @@ async function loginUser(username, password) {
   };
 }
 
-async function updateUserRole(username, manager, role) {
+async function updateUserRole(username, role) {
   if (role !== "employee" && role !== "manager") {
     logger.info(`Failed role change attempt: Invalid role`);
     return {
