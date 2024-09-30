@@ -122,7 +122,11 @@ describe("TicketService", () => {
       TicketDao.getTicketById.mockResolvedValue(ticket);
       TicketDao.updateTicketStatus.mockResolvedValue();
 
-      const result = await ticketService.processTicket(ticketId, "approved");
+      const result = await ticketService.processTicket(
+        ticketId,
+        "approved",
+        "Battlemuffins"
+      );
 
       expect(result.success).toBe(true);
       expect(TicketDao.updateTicketStatus).toHaveBeenCalledWith(

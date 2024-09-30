@@ -95,11 +95,7 @@ describe("User Service", () => {
       UserDao.getUserByUsername.mockResolvedValue(mockUser);
       UserDao.updateUserRole.mockResolvedValue();
 
-      const result = await userService.updateUserRole(
-        username,
-        mockManager.username,
-        role
-      );
+      const result = await userService.updateUserRole(username, role);
 
       expect(result).toEqual({
         success: true,

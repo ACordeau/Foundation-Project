@@ -124,7 +124,7 @@ async function getPendingTickets() {
   };
 }
 
-async function processTicket(ticketId, status) {
+async function processTicket(ticketId, status, username) {
   if (status !== "approved" && status !== "denied") {
     logger.info(`Failed processing attempt: Invalid status`);
     return {
@@ -134,7 +134,6 @@ async function processTicket(ticketId, status) {
   }
 
   const ticket = await TicketDao.getTicketById(ticketId);
-  console.log(ticket);
 
   if (!ticket) {
     logger.info(
@@ -151,6 +150,17 @@ async function processTicket(ticketId, status) {
     return {
       success: false,
       message: "Ticket already processed",
+    };
+  }
+
+  console.log(ticket.username);
+  console.log(username);
+
+  if (ticket.username === username) {
+    logger.info(`Failed processing attempt: Cannot process personal tickets`);
+    return {
+      success: false,
+      message: "Resource restricted",
     };
   }
 

@@ -56,12 +56,13 @@ router.get("/pending", verifyToken, isManager, async (req, res) => {
 
 router.put("/process", verifyToken, isManager, async (req, res) => {
   const { status, ticketId } = req.body;
+  const username = req.user.username;
 
   const id = {
     ticketId,
   };
 
-  const updatedTicket = await ticketService.processTicket(id, status);
+  const updatedTicket = await ticketService.processTicket(id, status, username);
 
   if (updatedTicket.success) {
     res.status(200).json(updatedTicket);
