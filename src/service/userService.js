@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const { logger } = require("../utils/logger");
 const secret = process.env.JWT_SECRET;
 
-async function registerUser(username, password, role = "employee") {
+async function registerUser(username, password) {
   if (!username || !password) {
     logger.info(`Failed register attempt: Invalid credentials`);
     return {
@@ -24,7 +24,7 @@ async function registerUser(username, password, role = "employee") {
   const newUser = {
     username,
     password: hashedPassword,
-    role,
+    role: "employee",
   };
 
   await UserDao.registerUser(newUser);
@@ -32,7 +32,7 @@ async function registerUser(username, password, role = "employee") {
   return {
     success: true,
     message: "User successfully registered",
-    user: { username, role },
+    user: { username, role: newUser.role },
   };
 }
 
@@ -68,6 +68,14 @@ async function updateUserRole(username, role) {
     return {
       success: false,
       message: "Role must be employee or manager",
+    };
+  }
+
+  if (role !== "manager") {
+    logger.info(`Failed role change attempt: Invalid role change permissions`);
+    return {
+      success: false,
+      message: "Managers cannot demote managers",
     };
   }
 

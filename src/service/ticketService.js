@@ -3,7 +3,7 @@ const UserDao = require("../dao/userDAO");
 const uuid = require("uuid");
 const { logger } = require("../utils/logger");
 
-async function submitTicket(username, amount, description, type) {
+async function submitTicket(username, amount, description, type = "Misc") {
   const user = await UserDao.getUserByUsername(username);
 
   if (!user) {
@@ -50,6 +50,8 @@ async function submitTicket(username, amount, description, type) {
 }
 
 async function viewPreviousTicketByType(username, type) {
+  console.log(username);
+  console.log(type);
   const user = await UserDao.getUserByUsername(username);
 
   if (!user) {
